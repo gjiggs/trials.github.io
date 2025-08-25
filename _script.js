@@ -1,455 +1,393 @@
-/* 
-  Lenawei Safaris - Ultra-Detailed, Modern CSS
-  Author: Lenawei Safaris (Improved by Copilot)
-  Description: World-class, visually stunning, responsive, and accessible stylesheet for a safari/travel single-page website.
+/*
+  Lenawei Safaris - Ultra-Detailed, Extended JavaScript
+  Author: Lenawei Safaris
+  Description: Rich, accessible, and interactive JS for a world-class safari website. 
+  Includes navigation, accessibility, gallery, animation, advanced UI/UX, and more.
 */
 
-/* ====== GLOBAL RESETS ====== */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  min-height: 100vh;
-  font-family: 'Montserrat', Arial, sans-serif;
-  background: #f9f6ef;
-  color: #222;
-  scroll-behavior: smooth;
-}
+/* ========== NAVIGATION, SMOOTH SCROLL & ACTIVE SECTION ========== */
+document.addEventListener('DOMContentLoaded', function() {
+  // Smooth scroll for nav links
+  document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeMobileNav();
+      }
+    });
+  });
 
-*, *:before, *:after {
-  box-sizing: border-box;
-}
+  // ScrollSpy: highlight nav links
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-link");
+  window.addEventListener('scroll', function() {
+    let scrollY = window.pageYOffset;
+    sections.forEach(sec => {
+      const sectionTop = sec.offsetTop - 120;
+      const sectionHeight = sec.offsetHeight;
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        document.querySelectorAll('.nav-link[href="#'+sec.id+'"]').forEach(link => link.classList.add('active'));
+      }
+    });
+  });
 
-body {
-  line-height: 1.7;
-  font-size: 1.08rem;
-  letter-spacing: .02em;
-  background: linear-gradient(180deg, #f9f6ef 0%, #fffbe6 100%);
-  min-height: 100vh;
-  transition: background 0.3s;
-}
-
-/* ====== TYPOGRAPHY ====== */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Merriweather', serif;
-  font-weight: 700;
-  margin-top: 0;
-  color: #3a3a1a;
-  letter-spacing: 0.01em;
-}
-
-h1 { font-size: 2.9rem; margin: 1.2rem 0; }
-h2 { font-size: 2.15rem; margin: 1rem 0; }
-h3 { font-size: 1.4rem; margin: 1rem 0 .7rem 0; }
-h4 { font-size: 1.18rem; }
-p, ul, ol { margin-bottom: 1.2em; }
-a {
-  color: #448C2C;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-a:hover, a:focus { color: #638e3b; text-decoration: underline; }
-
-/* ====== CONTAINER & GRID ====== */
-.container {
-  width: 94%;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-  background: transparent;
-}
-@media (max-width: 700px) {
-  .container { width: 99%; }
-}
-
-/* ====== HEADER & NAV ====== */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255,255,255,0.97);
-  box-shadow: 0 2px 18px rgba(188,176,96,0.08);
-  transition: box-shadow 0.2s;
-}
-.header-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: .7rem 0;
-  gap: 2vw;
-}
-.logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.logo {
-  height: 54px;
-  width: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(150,120,32,0.13);
-}
-.brand {
-  font-size: 1.6rem;
-  font-family: 'Merriweather', serif;
-  letter-spacing: .03em;
-  color: #35502a;
-  font-weight: 700;
-}
-.brand-accent { color: #e6b800; }
-
-/* NAVIGATION */
-nav {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 1.1rem;
-  margin: 0;
-  padding: 0;
-  align-items: center;
-  background: transparent;
-}
-.nav-link {
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 1.07rem;
-  padding: .6rem 1.2rem;
-  border-radius: 30px;
-  transition: background 0.2s, color 0.2s;
-  color: #4b5320;
-  font-weight: 500;
-  position: relative;
-  letter-spacing: .01em;
-}
-.nav-link.active,
-.nav-link:hover,
-.nav-link:focus {
-  background: #e6b8001a;
-  color: #35502a;
-}
-.nav-link.special {
-  color: #fff;
-  background: #e6b800;
-  margin-left: .4rem;
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgba(230,184,0,0.13);
-}
-.nav-link.special:hover { color: #f7ffe4; background: #bfa200; }
-.nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 2.1rem;
-  margin-left: .7rem;
-  color: #4b5320;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-/* Header CTA Button */
-.header-cta .btn-highlight {
-  background: #e6b800;
-  color: #fff;
-  padding: .75em 1.5em;
-  border-radius: 28px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  transition: background .22s;
-  border: none;
-  box-shadow: 0 3px 12px rgba(230,184,0,0.13);
-}
-.header-cta .btn-highlight:hover { background: #bfa200; color: #fff; }
-
-/* Responsive Nav */
-@media (max-width: 950px) {
-  .nav-links {
-    flex-direction: column;
-    background: #fffbe6;
-    position: absolute;
-    top: 70px; right: 0; left: 0;
-    display: none;
-    gap: 0;
-    box-shadow: 0 4px 24px rgba(188,176,96,0.13);
-    z-index: 999;
-    padding: 1.2em 0;
+  // Mobile nav toggle
+  const navToggle = document.querySelector('.nav-toggle');
+  function closeMobileNav() {
+    document.querySelector('.nav-links')?.classList.remove('open');
+    navToggle?.setAttribute('aria-expanded', 'false');
   }
-  .nav-links.open { display: flex; }
-  .nav-link { padding: 1em 2em; border-radius: 0; }
-  .nav-toggle { display: block; }
-}
-
-@media (max-width: 700px) {
-  .header-bar { flex-direction: column; gap: .5rem; }
-  .logo { height: 36px; }
-}
-
-/* ====== HERO SECTION ====== */
-.hero {
-  position: relative;
-  min-height: 85vh;
-  background: linear-gradient(rgba(31, 49, 24,.25),rgba(31,49,24,.10)), url('images/safari-hero.jpg') center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  color: #fff;
-  box-shadow: 0 16px 32px rgba(88,88,25,0.11);
-  overflow: hidden;
-  border-bottom: 2px solid #e6b80033;
-}
-.hero-bg-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(270deg, rgba(230,184,0,0.10) 0%, rgba(31,49,24,0.34) 100%);
-  z-index: 1;
-}
-.hero-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  width: 100%;
-  gap: 4vw;
-  padding: 5vw 3vw 3vw 3vw;
-}
-.hero-text {
-  flex: 2 1 460px;
-  max-width: 640px;
-  color: #fff;
-  text-shadow: 0 3px 20px rgba(31,49,24,0.17);
-}
-.hero-text h1 {
-  font-size: 3.1rem;
-  line-height: 1.1;
-  margin-bottom: .7em;
-  color: #fff;
-  letter-spacing: 0.01em;
-}
-.hero-text .highlight {
-  color: #e6b800;
-  background: rgba(31,49,24,0.16);
-  padding: 0 .3em;
-  border-radius: 8px;
-}
-.hero-text p {
-  font-size: 1.22rem;
-  margin-bottom: 1.5em;
-  color: #f7ffe4;
-}
-.hero-btns {
-  display: flex;
-  gap: 1.4em;
-  margin-bottom: 1.2em;
-}
-.btn, .btn-lg, .btn-alt, .btn-sm {
-  display: inline-block;
-  text-align: center;
-  border: none;
-  border-radius: 32px;
-  padding: .75em 2.1em;
-  background: #4b5320;
-  color: #ffe082;
-  font-weight: 700;
-  font-size: 1.13rem;
-  cursor: pointer;
-  margin-right: .7em;
-  transition: background .22s, color .22s, box-shadow .22s;
-  box-shadow: 0 4px 18px rgba(76, 83, 32, 0.12);
-}
-.btn-lg { font-size: 1.21rem; padding: 1em 2.5em; }
-.btn-alt {
-  background: #e6b800;
-  color: #fff;
-}
-.btn-alt:hover, .btn-lg:hover, .btn:hover {
-  background: #638e3b;
-  color: #fff;
-  box-shadow: 0 6px 24px rgba(136,100,0,0.14);
-}
-.btn-sm {
-  font-size: 1rem;
-  padding: .45em 1.3em;
-  background: #fffbe6;
-  color: #4b5320;
-  border: 1.6px solid #e6b800;
-  margin-top: 1em;
-  box-shadow: none;
-}
-.btn-sm:hover { background: #e6b800; color: #fff; }
-.hero-awards img {
-  height: 38px;
-  margin-right: 1em;
-  background: #fffbe6;
-  border-radius: 8px;
-  box-shadow: 0 1px 7px rgba(136,100,0,0.13);
-}
-.hero-media {
-  flex: 1 1 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2rem;
-}
-.hero-img {
-  width: 340px;
-  max-width: 100%;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(31,49,24,0.23);
-  margin-bottom: .7em;
-}
-.hero-video {
-  width: 340px;
-  max-width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(31,49,24,0.13);
-  background: #222;
-}
-.hero-video iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-.hero-socials {
-  position: absolute;
-  bottom: 40px;
-  left: 40px;
-  display: flex;
-  gap: 1.3em;
-  z-index: 3;
-}
-.hero-socials a {
-  font-size: 1.44rem;
-  color: #fffbe6;
-  background: #35502a;
-  border-radius: 50%;
-  width: 38px; height: 38px;
-  display: flex;
-  align-items: center; justify-content: center;
-  transition: background .21s, color .21s, box-shadow .21s;
-  box-shadow: 0 2px 8px rgba(188,176,96,0.11);
-}
-.hero-socials a:hover { background: #e6b800; color: #35502a; box-shadow: 0 4px 16px #e6b80022; }
-.scroll-down-indicator {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-}
-.scroll-down-indicator a {
-  color: #e6b800;
-  font-size: 2.2rem;
-  animation: bounce 2s infinite;
-}
-@keyframes bounce {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(10px);}
-}
-
-/* Responsive Hero */
-@media (max-width: 1000px) {
-  .hero-content { flex-direction: column; align-items: flex-start; }
-  .hero-media { align-items: flex-start; }
-  .hero-socials { left: 20px; bottom: 16px; }
-}
-@media (max-width: 700px) {
-  .hero-content { padding: 3vw 1vw 1vw 1vw; }
-  .hero-img, .hero-video { width: 98vw; }
-  .hero-text h1 { font-size: 2rem; }
-}
-
-/* More improvements: better mobile spacing, grid gaps, shadows, etc.
-   ... (The rest of your CSS is already quite detailed and well-structured, so small tweaks are made below for padding, gaps, and contrasts) */
-
-/* ====== ABOUT, DESTINATIONS, TOURS, ETC. ====== */
-
-/* Use slightly larger gaps and more consistent paddings for all grids */
-.why-grid, .destinations-grid, .tour-cards, .gallery-grid, .team-grid, .resources-grid, .offers-grid {
-  gap: 2.3rem;
-}
-
-/* Slightly more prominent card shadows and hover scale */
-.why-card, .destination-card, .tour-card, .gallery-item, .team-member, .resource-card, .offer-card, .testimonial {
-  box-shadow: 0 2px 16px rgba(188,176,96,0.11);
-  transition: box-shadow 0.18s, transform 0.16s;
-}
-.why-card:hover, .destination-card:hover, .tour-card:hover, .gallery-item:hover, .team-member:hover, .resource-card:hover, .offer-card:hover, .testimonial:hover {
-  box-shadow: 0 8px 32px rgba(136,100,0,0.16);
-  transform: translateY(-4px) scale(1.04);
-}
-
-/* FAQ focus + answer animation */
-.faq-question:focus {
-  outline: 2.4px solid #e6b800;
-  background: #f9f6ef;
-}
-.faq-item .faq-answer {
-  transition: max-height .35s cubic-bezier(.4,0,.2,1), padding .15s;
-}
-
-/* Newsletter and Contact improvements */
-#newsletter-form label, .contact-form-box form label {
-  font-weight: 600;
-  color: #35502a;
-  letter-spacing: .01em;
-}
-#newsletter-email, .contact-form-box input, .contact-form-box textarea {
-  border: 1.5px solid #e6b800;
-  border-radius: 22px;
-  padding: .8em 1.2em;
-  font-size: 1.08rem;
-  background: #fff;
-  transition: border-color 0.18s;
-}
-#newsletter-email:focus, .contact-form-box input:focus, .contact-form-box textarea:focus {
-  border-color: #bfa200;
-}
-
-/* Custom scrollbar improvements */
-::-webkit-scrollbar { width: 10px; background: #fffbe6; }
-::-webkit-scrollbar-thumb {
-  background: #e6b80088;
-  border-radius: 8px;
-}
-::-webkit-scrollbar-thumb:hover { background: #e6b800cc; }
-
-/* Footer: larger links and social icons */
-footer nav a {
-  font-size: 1.07rem;
-  padding: .2em .5em;
-}
-.footer-socials a {
-  width: 36px; height: 36px;
-  font-size: 1.5rem;
-}
-
-@media (max-width: 600px) {
-  .container { width: 100%; }
-  .btn, .btn-lg, .btn-alt { padding: .6em 1.1em; font-size: .97rem; }
-  .special-offers, .about-history, .about-video, .impact-stats, .gallery-video, .newsletter, .partners { padding: 1.3em .4em; }
-  footer { font-size: .96rem; padding: 1.1rem 0 1rem 0; }
-}
-
-/* Accessibility improvements */
-:focus {
-  outline: 2.4px solid #e6b800;
-  outline-offset: 2px;
-}
-[aria-live="polite"] { font-style: italic; color: #e6b800; }
-
-/* Print styles unchanged from your original */
-@media print {
-  header, nav, .btn, .scroll-down-indicator, .hero-video, .gallery-video, #scroll-to-top, .testimonial-nav, .contact-socials, .footer-socials, .offers, .newsletter, .partners, .special-offers, .tours-cta {
-    display: none !important;
+  if(navToggle) {
+    navToggle.addEventListener('click', function() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('open');
+      this.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+    });
   }
-  body, .container {
-    background: #fff !important;
-    color: #111 !important;
+  document.addEventListener('click', function(e) {
+    const navLinks = document.querySelector('.nav-links');
+    if(navLinks && navLinks.classList.contains('open')) {
+      if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) closeMobileNav();
+    }
+  });
+
+  // Keyboard navigation for nav links
+  document.querySelectorAll('.nav-links a').forEach(link=>{
+    link.addEventListener('keydown', function(e) {
+      if(e.key === " " || e.key === "Enter") this.click();
+    });
+  });
+
+  /* ========== SCROLL TO TOP BUTTON ========== */
+  const scrollBtn = document.getElementById('scroll-to-top');
+  window.addEventListener('scroll', function() {
+    if(window.scrollY > 400) scrollBtn.classList.add('show');
+    else scrollBtn.classList.remove('show');
+  });
+  scrollBtn.addEventListener('click', function() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+
+  /* ========== HERO SECTION: ANIMATION & VIDEO ========== */
+  // Animate hero text on load
+  const heroText = document.querySelector('.hero-text h1');
+  if(heroText) {
+    heroText.style.opacity = 0;
+    setTimeout(()=>{ heroText.style.opacity = 1; heroText.style.transition="opacity 1.8s"; }, 350);
   }
-}
+  // Optional: play/pause hero video on scroll into view
+  const heroVideo = document.querySelector('.hero-video iframe');
+  if(heroVideo && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        heroVideo.contentWindow.postMessage(
+          JSON.stringify({
+            event: e.isIntersecting ? "play" : "pause",
+            func: e.isIntersecting ? "playVideo" : "pauseVideo"
+          }), '*'
+        );
+      });
+    }, { threshold: 0.37 });
+    obs.observe(heroVideo);
+  }
+
+  /* ========== GALLERY LIGHTBOX ========== */
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const modal = document.getElementById('gallery-modal');
+  const modalImg = modal?.querySelector('.modal-img');
+  const modalCap = modal?.querySelector('.modal-caption');
+  let currentImgIdx = 0;
+  let galleryArray = Array.from(galleryItems);
+
+  function openModal(idx) {
+    if (!modal) return;
+    currentImgIdx = idx;
+    const item = galleryArray[idx];
+    modalImg.src = item.querySelector('img').src;
+    modalCap.textContent = item.querySelector('span').textContent;
+    modal.classList.add('open');
+    modalImg.focus();
+  }
+  galleryItems.forEach((item, idx) => {
+    item.addEventListener('click', () => openModal(idx));
+    item.setAttribute('tabindex', '0');
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') openModal(idx);
+    });
+  });
+  if(modal) {
+    modal.querySelector('.modal-close').onclick = () => modal.classList.remove('open');
+    modal.querySelector('.modal-prev').onclick = function() {
+      openModal((currentImgIdx-1+galleryArray.length)%galleryArray.length);
+    };
+    modal.querySelector('.modal-next').onclick = function() {
+      openModal((currentImgIdx+1)%galleryArray.length);
+    };
+    modal.addEventListener('click', function(e) {
+      if(e.target === modal) modal.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e) {
+      if(!modal.classList.contains('open')) return;
+      if(e.key === 'ArrowLeft') modal.querySelector('.modal-prev').click();
+      if(e.key === 'ArrowRight') modal.querySelector('.modal-next').click();
+      if(e.key === 'Escape') modal.classList.remove('open');
+    });
+  }
+
+  /* ========== GALLERY: LAZY LOAD IMAGES & ANIMATION ========== */
+  if('IntersectionObserver' in window) {
+    document.querySelectorAll('.gallery-item img').forEach(img=>{
+      img.setAttribute('loading','lazy');
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
+          }
+        });
+      },{threshold:0.1});
+      io.observe(img);
+    });
+  }
+
+  /* ========== TESTIMONIALS SLIDER (AUTO & BUTTONS) ========== */
+  const testimonialSlider = document.querySelector('.testimonials-slider');
+  const testimonialBlocks = testimonialSlider ? testimonialSlider.querySelectorAll('.testimonial') : [];
+  let testimonialIndex = 0;
+  function showTestimonial(idx) {
+    if (!testimonialSlider) return;
+    testimonialBlocks.forEach((t,i) => t.style.display = (i === idx ? 'block':'none'));
+  }
+  function nextTestimonial() {
+    testimonialIndex = (testimonialIndex + 1) % testimonialBlocks.length;
+    showTestimonial(testimonialIndex);
+  }
+  function prevTestimonial() {
+    testimonialIndex = (testimonialIndex - 1 + testimonialBlocks.length) % testimonialBlocks.length;
+    showTestimonial(testimonialIndex);
+  }
+  if(testimonialSlider && testimonialBlocks.length) {
+    showTestimonial(0);
+    const prevBtn = document.querySelector('.testimonial-prev');
+    const nextBtn = document.querySelector('.testimonial-next');
+    if(prevBtn) prevBtn.onclick = prevTestimonial;
+    if(nextBtn) nextBtn.onclick = nextTestimonial;
+    setInterval(nextTestimonial, 7000);
+  }
+
+  /* ========== FAQ ACCORDION, MULTI-OPEN ========== */
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const faqItem = btn.closest('.faq-item');
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      if(!expanded) {
+        faqItem.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        faqItem.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  /* ========== NEWSLETTER SIGNUP DEMO ========== */
+  const newsletterForm = document.getElementById('newsletter-form');
+  if(newsletterForm) {
+    newsletterForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email').value.trim();
+      const msg = document.getElementById('newsletter-msg');
+      if(!email.match(/^[\w\.\-]+@[\w\-]+\.[\w\-\.]+$/)) {
+        msg.textContent = "Please enter a valid email.";
+        msg.style.color = "#b00";
+        return;
+      }
+      msg.textContent = "Thank you for subscribing! Check your inbox for a welcome message.";
+      msg.style.color = "#35502a";
+      newsletterForm.reset();
+      setTimeout(()=>msg.textContent="", 7000);
+    });
+  }
+
+  /* ========== CONTACT FORM VALIDATION & UX ========== */
+  const contactForm = document.getElementById('contact-form');
+  if(contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      let valid = true;
+      ['name','email','message'].forEach(id=>{
+        const input = document.getElementById(id);
+        if(input && !input.value.trim()) {
+          input.style.borderColor = "#b00";
+          valid = false;
+        } else if(input) {
+          input.style.borderColor = "#e6b800";
+        }
+      });
+      if(!valid) {
+        e.preventDefault();
+        alert('Please fill in all required fields.');
+      }
+    });
+  }
+
+  /* ========== TRIP PLANNER (Example Steps, Expandable) ========== */
+  // Demo only: add advanced planner logic as needed
+  const plannerForm = document.getElementById('trip-planner-form');
+  if(plannerForm) {
+    plannerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Could process planner step-by-step, add more fields, etc
+      alert("Thank you! Our travel experts will send you a custom safari proposal soon.");
+      plannerForm.reset();
+    });
+  }
+
+  /* ========== PARTNERS LOGO CAROUSEL (Continuous Scroll) ========== */
+  const partners = document.querySelector('.partners-logos');
+  if(partners && partners.children.length > 5) {
+    let scrollPos = 0;
+    setInterval(()=>{
+      scrollPos += 1;
+      if(scrollPos > partners.scrollWidth-partners.clientWidth)
+        scrollPos = 0;
+      partners.scrollTo({left: scrollPos, behavior:'smooth'});
+    }, 150);
+  }
+
+  /* ========== ACCESSIBILITY: TRAP FOCUS IN MODALS ========== */
+  function trapFocus(modal) {
+    const focusableEls = modal.querySelectorAll('a, button, textarea, input, select, [tabindex]:not([tabindex="-1"])');
+    const first = focusableEls[0], last = focusableEls[focusableEls.length-1];
+    modal.addEventListener('keydown', function(e) {
+      if(e.key === 'Tab') {
+        if(e.shiftKey) {
+          if(document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if(document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    });
+  }
+  if(modal) trapFocus(modal);
+
+  // Keyboard skip links for accessibility
+  const skipLinks = document.createElement('nav');
+  skipLinks.innerHTML = `
+    <a href="#home" class="skip-link">Skip to main content</a>
+    <a href="#contact" class="skip-link">Skip to contact</a>
+  `;
+  skipLinks.className = "skip-links";
+  document.body.insertBefore(skipLinks, document.body.firstChild);
+
+  /* ========== ANIMATION ON SCROLL (Fade In) ========== */
+  function animateOnScroll(className, animation) {
+    if(!('IntersectionObserver' in window)) return;
+    document.querySelectorAll(className).forEach(el=>{
+      el.style.opacity = 0;
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting) {
+            el.classList.add(animation);
+            el.style.opacity = 1;
+            io.unobserve(el);
+          }
+        });
+      },{threshold:0.15});
+      io.observe(el);
+    });
+  }
+  animateOnScroll('.why-card','fade-in');
+  animateOnScroll('.destination-card','fade-in');
+  animateOnScroll('.tour-card','fade-in');
+  animateOnScroll('.blog-card','fade-in');
+  animateOnScroll('.team-member','fade-in');
+  animateOnScroll('.resource-card','fade-in');
+  animateOnScroll('.impact-card','fade-in');
+  animateOnScroll('.offer-card','fade-in');
+
+  /* ========== "AS SEEN IN" MEDIA SLIDER (Optional) ========== */
+  // You can add a media-logos section and auto-scroll it here
+
+  /* ========== COOKIE CONSENT DEMO ========== */
+  if(!localStorage.getItem('cookieConsent')) {
+    const cookieBar = document.createElement('div');
+    cookieBar.innerHTML = `
+      <div style="background:#323525;color:#fff;padding:1em;position:fixed;bottom:0;left:0;right:0;z-index:9999;display:flex;justify-content:center;align-items:center;gap:1.3em;box-shadow:0 -1px 6px #2228;">
+        <span>We use cookies to enhance your experience. By continuing, you agree to our <a href="#privacy" style="color:#ffe082;text-decoration:underline;">Privacy Policy</a>.</span>
+        <button id="cookie-accept" style="background:#e6b800;color:#fff;border:none;padding:.5em 1.3em;border-radius:22px;font-weight:600;cursor:pointer;">Accept</button>
+      </div>`;
+    document.body.appendChild(cookieBar);
+    document.getElementById('cookie-accept').onclick = () => {
+      cookieBar.remove();
+      localStorage.setItem('cookieConsent','accepted');
+    };
+  }
+
+  /* ========== PAGE LOAD ANIMATION ========== */
+  const mainContent = document.querySelector('main, body');
+  if(mainContent) {
+    mainContent.style.opacity = 0;
+    setTimeout(()=>{ mainContent.style.transition="opacity 1.2s"; mainContent.style.opacity = 1; }, 150);
+  }
+
+  /* ========== DYNAMIC YEAR IN FOOTER ========== */
+  const yearSpan = document.createElement('span');
+  yearSpan.textContent = new Date().getFullYear();
+  const footer = document.querySelector('footer p');
+  if(footer && !footer.textContent.includes(new Date().getFullYear()))
+    footer.innerHTML = footer.innerHTML.replace(/202\d{1}/g, yearSpan.textContent);
+
+  /* ========== AUTO-COLLAPSE NAV ON RESIZE ========== */
+  window.addEventListener('resize', function() {
+    if(window.innerWidth > 950) closeMobileNav();
+  });
+
+  /* ========== EXTRA: SOCIAL SHARE BUTTONS ========== */
+  // Add share buttons logic if present (for blog, tours, etc)
+  document.querySelectorAll('.share-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if(navigator.share) { // Web Share API
+        navigator.share({
+          title: document.title,
+          url: window.location.href
+        });
+      } else {
+        prompt("Copy this link:", window.location.href);
+      }
+    });
+  });
+
+  /* ========== DUMMY: GOOGLE MAPS INIT (for advanced users) ========== */
+  // If you embed a real Google Map, add JS API code here
+
+  /* ========== DUMMY: BOOKING BUTTONS ALERT ========== */
+  document.querySelectorAll('a.btn[href="#booking"]').forEach(btn=>{
+    btn.addEventListener('click',function(e){
+      e.preventDefault();
+      alert("Online booking coming soon! Please use the contact form or email us directly.");
+    });
+  });
+
+  /* ========== RESOURCE ACCORDION (if present) ========== */
+  document.querySelectorAll('.resource-card h3').forEach(h=>{
+    h.tabIndex = 0;
+    h.addEventListener('click',function(){
+      this.parentElement.classList.toggle('open');
+    });
+    h.addEventListener('keydown',function(e){
+      if(e.key===' '||e.key==='Enter') this.click();
+    });
+  });
+});
+
+/* ========== GLOBAL UTILITY: FADE-IN ANIMATION ========== */
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes fadeIn { from { opacity: 0; transform:translateY(40px); } to { opacity: 1; transform:translateY(0); } }
+.fade-in { animation: fadeIn 1.1s cubic-bezier(.31,.66,.42,1.01) both; }
+`;
+document.head.appendChild(style);
+
+/* ========== END OF LENAWEI SAFARIS JS ========== */
