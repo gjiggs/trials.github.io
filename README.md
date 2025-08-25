@@ -146,8 +146,6 @@ We welcome contributions! Please see [CONTRIBUTING.md](docs/CONTRIBUTING.md) for
 ---
 
 ## 🏗️ Credits
-
-- [Architect Theme](https://github.com/pages-themes/architect) for Jekyll & GitHub Pages
 - All Lenawei Safaris photography & content © Lenawei Safaris
 
 ---
